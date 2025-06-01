@@ -24,7 +24,7 @@ namespace Backend.Application.Services
             return data.Select(a => new PresupuestoResponseDto
             {
                 Id = a.Id,
-                TipoGasto = a.TipoGasto,
+                TipoGasto = a.TipoGasto!.Descripcion,
                 Mes = a.Mes,
                 Año = a.Año,
                 Monto=a.Monto,
@@ -40,7 +40,7 @@ namespace Backend.Application.Services
             return new PresupuestoResponseDto
             {
                 Id = a.Id,
-                TipoGasto = a.TipoGasto,
+                TipoGasto = a.TipoGasto!.Descripcion,
                 Mes = a.Mes,
                 Año = a.Año,
                 Monto = a.Monto,

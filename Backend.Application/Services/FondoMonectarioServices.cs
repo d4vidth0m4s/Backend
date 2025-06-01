@@ -12,7 +12,7 @@ namespace Backend.Application.Services
         private readonly IFondoMonectarioRepository _repo = repo;
         public async Task<int> CreateAsync(FondoMonectarioRequestDto dto)
         {
-            var response = dto.Adapt<FondoMonectario>();
+            var response = dto.Adapt<FondoMonetario>();
             response.FechaCreacion = DateTime.UtcNow;
             return await _repo.CreateAsync(response);
         }
@@ -48,7 +48,7 @@ namespace Backend.Application.Services
 
         public async Task<bool> UpdateAsync(FondoMonectarioEditRequestDto dto)
         {
-            var response = dto.Adapt<FondoMonectario>();
+            var response = dto.Adapt<FondoMonetario>();
             return await _repo.UpdateAsync(response);
         }
 

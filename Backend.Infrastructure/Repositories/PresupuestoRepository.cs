@@ -18,12 +18,16 @@ namespace Backend.Infrastructure.Repositories
 
         public async Task<Presupuesto?> GetByIdAsync(int id)
         {
-            return await _context.Presupuestos.FindAsync(id);
+            return await _context.Presupuestos
+                          .Include(p => p.TipoGasto)
+                          .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Presupuesto>> GetAllAsync()
         {
-            return await _context.Presupuestos.ToListAsync();
+            return await _context.Presupuestos
+                         .Include(p => p.TipoGasto)
+                         .ToListAsync();
         }
 
         public async Task<bool> UpdateAsync(Presupuesto entity)

@@ -36,8 +36,8 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FondoMonectario")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FondoMonetarioId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Monto")
                         .HasColumnType("float");
@@ -47,10 +47,12 @@ namespace Backend.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FondoMonetarioId");
+
                     b.ToTable("Depositos");
                 });
 
-            modelBuilder.Entity("Backend.Domain.Entities.FondoMonectario", b =>
+            modelBuilder.Entity("Backend.Domain.Entities.FondoMonetario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,10 +100,12 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<double>("Monto")
                         .HasColumnType("float");
 
-                    b.Property<string>("TipoGasto")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TipoGastoId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TipoGastoId");
 
                     b.ToTable("Presupuestos");
                 });
@@ -123,16 +127,23 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FondoMonectario")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FondoMonetarioId")
+                        .HasColumnType("int");
 
                     b.Property<string>("TipoDoc")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoGastoId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FondoMonetarioId");
+
+                    b.HasIndex("TipoGastoId");
 
                     b.ToTable("RegistroGastos");
                 });
@@ -154,6 +165,61 @@ namespace Backend.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoGastos");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.Deposito", b =>
+                {
+                    b.HasOne("Backend.Domain.Entities.FondoMonetario", "FondoMonetario")
+                        .WithMany("Depositos")
+                        .HasForeignKey("FondoMonetarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FondoMonetario");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.Presupuesto", b =>
+                {
+                    b.HasOne("Backend.Domain.Entities.TipoGasto", "TipoGasto")
+                        .WithMany("Presupuestos")
+                        .HasForeignKey("TipoGastoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoGasto");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.RegistroGasto", b =>
+                {
+                    b.HasOne("Backend.Domain.Entities.FondoMonetario", "FondoMonetario")
+                        .WithMany("RegistroGastos")
+                        .HasForeignKey("FondoMonetarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Domain.Entities.TipoGasto", "TipoGasto")
+                        .WithMany("RegistroGastos")
+                        .HasForeignKey("TipoGastoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FondoMonetario");
+
+                    b.Navigation("TipoGasto");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.FondoMonetario", b =>
+                {
+                    b.Navigation("Depositos");
+
+                    b.Navigation("RegistroGastos");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.TipoGasto", b =>
+                {
+                    b.Navigation("Presupuestos");
+
+                    b.Navigation("RegistroGastos");
                 });
 #pragma warning restore 612, 618
         }

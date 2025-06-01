@@ -17,12 +17,16 @@ namespace Backend.Infrastructure.Repositories
 
         public async Task<Deposito?> GetByIdAsync(int id)
         {
-            return await _context.Depositos.FindAsync(id);
+            return await _context.Depositos
+                        .Include(d => d.FondoMonetario)
+                        .FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<IEnumerable<Deposito>> GetAllAsync()
         {
-            return await _context.Depositos.ToListAsync();
+            return await _context.Depositos
+                 .Include(d => d.FondoMonetario)
+                 .ToListAsync();
         }
 
         public async Task<bool> UpdateAsync(Deposito entity)

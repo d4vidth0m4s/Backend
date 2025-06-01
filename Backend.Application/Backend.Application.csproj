@@ -15,4 +15,9 @@
     <ProjectReference Include="..\Backend.Domain\Backend.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Consulta\Request\" />
+    <Folder Include="DTOs\Graficas\Request\" />
+  </ItemGroup>
+
 </Project>

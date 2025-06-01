@@ -13,6 +13,8 @@ namespace Backend.Application.IoC
             services.AddScoped<IFondoMonectarioServices, FondoMonectarioServices>();
             services.AddScoped<IDepositoServices, DepositoServices>();
             services.AddScoped<IPresupuestosServices, PresupuestoServices>();
+            services.AddScoped<IMovimientoService, MovimientoService>();
+            services.AddScoped<IGraficoPresupuestoService, GraficoPresupuestoService>();
 
             return services;
         }

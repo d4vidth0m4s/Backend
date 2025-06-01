@@ -25,7 +25,7 @@ namespace Backend.Application.Services
             {
                 Id = a.Id,
                 Fecha =a.Fecha,
-                FondoMonectario=a.FondoMonectario,
+                FondoMonectario=a.FondoMonetario!.Nombre,
                 Monto=a.Monto,
                 Observacion=a.Observacion,
             });
@@ -40,7 +40,7 @@ namespace Backend.Application.Services
             {
                 Id = a.Id,
                 Fecha = a.Fecha,
-                FondoMonectario = a.FondoMonectario,
+                FondoMonectario = a.FondoMonetario!.Nombre,
                 Monto = a.Monto,
                 Observacion = a.Observacion,
             };

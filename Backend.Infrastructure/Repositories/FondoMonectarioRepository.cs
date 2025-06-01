@@ -10,24 +10,24 @@ namespace Backend.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context = context;
 
-        public async Task<int> CreateAsync(FondoMonectario entity)
+        public async Task<int> CreateAsync(FondoMonetario entity)
         {
             _context.FondoMonectarios.Add(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
 
-        public async Task<FondoMonectario?> GetByIdAsync(int id)
+        public async Task<FondoMonetario?> GetByIdAsync(int id)
         {
             return await _context.FondoMonectarios.FindAsync(id);
         }
 
-        public async Task<IEnumerable<FondoMonectario>> GetAllAsync()
+        public async Task<IEnumerable<FondoMonetario>> GetAllAsync()
         {
             return await _context.FondoMonectarios.ToListAsync();
         }
 
-        public async Task<bool> UpdateAsync(FondoMonectario entity)
+        public async Task<bool> UpdateAsync(FondoMonetario entity)
         {
             var existing = await _context.FondoMonectarios.FindAsync(entity.Id);
             if (existing == null) return false;

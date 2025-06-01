@@ -18,6 +18,8 @@ namespace Backend.Infrastructure.IoC
             services.AddScoped<IFondoMonectarioRepository, FondoMonectarioRepository>();
             services.AddScoped<IDepositoRepository, DepositoRepository>();
             services.AddScoped<IPresupuestoRepository, PresupuestoRepository>();
+            services.AddScoped<IMovimientoRepository, MovimientoRepository>();
+            services.AddScoped<IGraficoPresupuestoRepository, GraficoPresupuestoRepository>();
 
 
             return services;
