@@ -11,9 +11,9 @@ namespace Backend.Application.DTOs.Presupuesto.Response
         public int Id { get; set; }
         public string? TipoGasto { get; set; }
         public string? Mes { get; set; }
-        public int Año { get; set; }
+        public int Anio { get; set; }
         public double Monto { get; set; }
-        public DateTime? FechaCreacion { get; set; }
+        public string? FechaCreacion { get; set; }
 
     }
 }

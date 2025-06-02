@@ -26,7 +26,8 @@ namespace Backend.Application.Services
                 Nombre = a.Nombre,
                 SaldoInicial=a.SaldoInicial,
                 SaldoActual=a.SaldoActual,
-                FechaCreacion = a.FechaCreacion
+                FechaCreacion = a.FechaCreacion,
+                Descripcion = a.Descripcion,
             });
         }
 
@@ -41,7 +42,8 @@ namespace Backend.Application.Services
                 Nombre = a.Nombre,
                 SaldoInicial = a.SaldoInicial,
                 SaldoActual = a.SaldoActual,
-                FechaCreacion = a.FechaCreacion
+                FechaCreacion = a.FechaCreacion,
+                Descripcion = a.Descripcion,
 
             };
         }

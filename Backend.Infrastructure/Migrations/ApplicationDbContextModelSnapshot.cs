@@ -88,11 +88,11 @@ namespace Backend.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Año")
+                    b.Property<int>("Anio")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("FechaCreacion")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("FechaCreacion")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mes")
                         .HasColumnType("nvarchar(max)");

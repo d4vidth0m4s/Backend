@@ -14,7 +14,7 @@ namespace Backend.Application.Services
         public async Task<int> CreateAsync(PresupuestoRequestDto dto)
         {
             var response = dto.Adapt<Presupuesto>();
-            response.FechaCreacion = DateTime.UtcNow;
+            //response.FechaCreacion = DateTime.UtcNow;
             return await _repo.CreateAsync(response);
         }
 
@@ -26,8 +26,9 @@ namespace Backend.Application.Services
                 Id = a.Id,
                 TipoGasto = a.TipoGasto!.Descripcion,
                 Mes = a.Mes,
-                Año = a.Año,
-                Monto=a.Monto,
+                Anio = a.Anio,
+                Monto = a.Monto,
+                FechaCreacion = a.FechaCreacion,
 
             });
         }
@@ -42,7 +43,7 @@ namespace Backend.Application.Services
                 Id = a.Id,
                 TipoGasto = a.TipoGasto!.Descripcion,
                 Mes = a.Mes,
-                Año = a.Año,
+                Anio = a.Anio,
                 Monto = a.Monto,
 
             };

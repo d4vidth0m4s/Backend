@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250601013228_inicial")]
-    partial class inicial
+    [Migration("20250601201005_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,11 +91,11 @@ namespace Backend.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Año")
+                    b.Property<int>("Anio")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("FechaCreacion")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("FechaCreacion")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mes")
                         .HasColumnType("nvarchar(max)");
