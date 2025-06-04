@@ -13,7 +13,7 @@ namespace Backend.Application.DTOs.Presupuesto.Response
         public string? Mes { get; set; }
         public int Anio { get; set; }
         public double Monto { get; set; }
-        public string? FechaCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
 
     }
 }

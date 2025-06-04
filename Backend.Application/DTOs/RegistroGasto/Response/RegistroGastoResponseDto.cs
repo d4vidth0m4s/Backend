@@ -1,20 +1,19 @@
-﻿namespace Backend.Domain.Entities
+﻿using Backend.Application.DTOs.RegistroGasto.Resquest;
+using Backend.Domain.Entities;
+
+namespace Backend.Application.DTOs.RegistroGasto.Response
 {
-    public class RegistroGasto
+    public class RegistroGastoResponseDto
     {
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public int FondoMonetarioId { get; set; }
-        public FondoMonetario? FondoMonetario { get; set; }
         public string? Comercio { get; set; }
         public string? TipoDoc { get; set; }
         public double Total { get; set; }
         public DateTime FechaCreacion { get; set; }
 
-        public int TipoGastoId { get; set; }
-        public TipoGasto? TipoGasto { get; set; }
-
-        public ICollection<RegistroGastoDetalles>? Detalles { get; set; }
+        public List<RegistroGastoDetallesDto>? Detalles { get; set; }
 
     }
 }

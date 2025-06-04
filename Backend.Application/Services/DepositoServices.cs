@@ -28,6 +28,7 @@ namespace Backend.Application.Services
                 FondoMonectario=a.FondoMonetario!.Nombre,
                 Monto=a.Monto,
                 Observacion=a.Observacion,
+                FechaCreacion=a.FechaCreacion,
             });
         }
 

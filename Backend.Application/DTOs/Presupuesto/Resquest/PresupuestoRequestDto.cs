@@ -7,6 +7,6 @@
         public double Monto { get; set; }
         public int TipoGastoId { get; set; }
 
-        public string? FechaCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
     }
 }

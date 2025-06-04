@@ -14,10 +14,9 @@ namespace Backend.Application.Services
         public async Task<int> CreateAsync(PresupuestoRequestDto dto)
         {
             var response = dto.Adapt<Presupuesto>();
-            //response.FechaCreacion = DateTime.UtcNow;
+            response.FechaCreacion = DateTime.UtcNow;
             return await _repo.CreateAsync(response);
         }
-
         public async Task<IEnumerable<PresupuestoResponseDto>> GetAllAsync()
         {
             var data = await _repo.GetAllAsync();
@@ -45,6 +44,7 @@ namespace Backend.Application.Services
                 Mes = a.Mes,
                 Anio = a.Anio,
                 Monto = a.Monto,
+                FechaCreacion = a.FechaCreacion
 
             };
         }

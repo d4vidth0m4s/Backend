@@ -10,6 +10,11 @@ namespace Backend.Infrastructure.Data
         public DbSet<Presupuesto> Presupuestos { get; set; }
         public DbSet<RegistroGasto> RegistroGastos { get; set; }
         public DbSet<Deposito> Depositos { get; set; }
+        public DbSet<RegistroGastoDetalles> RegistroGastoDetalles { get; set; }
+
+
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FondoMonetario>()
@@ -31,6 +36,11 @@ namespace Backend.Infrastructure.Data
                 .HasMany(t => t.RegistroGastos)
                 .WithOne(g => g.TipoGasto)
                 .HasForeignKey(g => g.TipoGastoId);
+
+            modelBuilder.Entity<RegistroGasto>()
+              .HasMany(r => r.Detalles)
+              .WithOne(d => d.RegistroGasto)
+              .HasForeignKey(d => d.IdRegistroGasto);
         }
     }
 }

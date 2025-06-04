@@ -42,10 +42,10 @@ namespace Backend.Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var entity = await _context.TipoGastos.FindAsync(id);
+            var entity = await _context.Presupuestos.FindAsync(id);
             if (entity == null) return false;
 
-            _context.TipoGastos.Remove(entity);
+            _context.Presupuestos.Remove(entity);
             await _context.SaveChangesAsync();
             return true;
         }

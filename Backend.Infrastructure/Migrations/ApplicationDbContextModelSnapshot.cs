@@ -91,8 +91,8 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<int>("Anio")
                         .HasColumnType("int");
 
-                    b.Property<string>("FechaCreacion")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("FechaCreacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Mes")
                         .HasColumnType("nvarchar(max)");
@@ -146,6 +146,30 @@ namespace Backend.Infrastructure.Migrations
                     b.HasIndex("TipoGastoId");
 
                     b.ToTable("RegistroGastos");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.RegistroGastoDetalles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdRegistroGasto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdRegistroTipo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Monto")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdRegistroGasto");
+
+                    b.ToTable("RegistroGastoDetalles");
                 });
 
             modelBuilder.Entity("Backend.Domain.Entities.TipoGasto", b =>
@@ -208,11 +232,27 @@ namespace Backend.Infrastructure.Migrations
                     b.Navigation("TipoGasto");
                 });
 
+            modelBuilder.Entity("Backend.Domain.Entities.RegistroGastoDetalles", b =>
+                {
+                    b.HasOne("Backend.Domain.Entities.RegistroGasto", "RegistroGasto")
+                        .WithMany("Detalles")
+                        .HasForeignKey("IdRegistroGasto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RegistroGasto");
+                });
+
             modelBuilder.Entity("Backend.Domain.Entities.FondoMonetario", b =>
                 {
                     b.Navigation("Depositos");
 
                     b.Navigation("RegistroGastos");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.RegistroGasto", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 
             modelBuilder.Entity("Backend.Domain.Entities.TipoGasto", b =>

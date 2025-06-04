@@ -15,6 +15,7 @@ namespace Backend.Application.IoC
             services.AddScoped<IPresupuestosServices, PresupuestoServices>();
             services.AddScoped<IMovimientoService, MovimientoService>();
             services.AddScoped<IGraficoPresupuestoService, GraficoPresupuestoService>();
+            services.AddScoped<IRegistroGastoService, RegistroGastoService>();
 
             return services;
         }

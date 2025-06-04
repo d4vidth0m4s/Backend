@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,7 +74,7 @@ namespace Backend.Infrastructure.Migrations
                     Mes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Anio = table.Column<int>(type: "int", nullable: false),
                     Monto = table.Column<double>(type: "float", nullable: false),
-                    FechaCreacion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TipoGastoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -119,6 +119,27 @@ namespace Backend.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RegistroGastoDetalles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdRegistroGasto = table.Column<int>(type: "int", nullable: false),
+                    IdRegistroTipo = table.Column<int>(type: "int", nullable: false),
+                    Monto = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegistroGastoDetalles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RegistroGastoDetalles_RegistroGastos_IdRegistroGasto",
+                        column: x => x.IdRegistroGasto,
+                        principalTable: "RegistroGastos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Depositos_FondoMonetarioId",
                 table: "Depositos",
@@ -128,6 +149,11 @@ namespace Backend.Infrastructure.Migrations
                 name: "IX_Presupuestos_TipoGastoId",
                 table: "Presupuestos",
                 column: "TipoGastoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RegistroGastoDetalles_IdRegistroGasto",
+                table: "RegistroGastoDetalles",
+                column: "IdRegistroGasto");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegistroGastos_FondoMonetarioId",
@@ -148,6 +174,9 @@ namespace Backend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Presupuestos");
+
+            migrationBuilder.DropTable(
+                name: "RegistroGastoDetalles");
 
             migrationBuilder.DropTable(
                 name: "RegistroGastos");
