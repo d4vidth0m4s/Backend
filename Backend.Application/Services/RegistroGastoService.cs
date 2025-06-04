@@ -9,12 +9,22 @@ using Mapster;
 
 namespace Backend.Application.Services
 {
-    public class RegistroGastoService(IRegistroGastoReoisitory repo) : IRegistroGastoService
+    public class RegistroGastoService(IRegistroGastoReoisitory repo, IFondoMonectarioRepository fondoRepo) : IRegistroGastoService
     {
         private readonly IRegistroGastoReoisitory _repo = repo;
+        private readonly IFondoMonectarioRepository _fondoRepo = fondoRepo;
 
         public async Task<int> CreateAsync(RegistroGastoRequestDto dto)
         {
+            var fondo = await _fondoRepo.GetByIdAsync(dto.FondoMonetarioId);
+            if (fondo == null) throw new Exception("Fondo monetario no encontrado");
+            if (fondo.SaldoActual < dto.Total) throw new Exception("Fondo monetario no encontrado");
+
+            fondo.SaldoActual -= dto.Total;
+            var fondoActualizado = await _fondoRepo.UpdateAsync(fondo);
+
+            if (!fondoActualizado) throw new Exception("Error al actualizar el saldo del fondo monetario");
+
             // var response = dto.Adapt<RegistroGasto>();
             var response = new RegistroGasto
             {
