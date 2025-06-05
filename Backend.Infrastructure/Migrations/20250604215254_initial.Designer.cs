@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250604033055_initial")]
+    [Migration("20250604215254_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -103,8 +103,9 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<double>("Monto")
                         .HasColumnType("float");
 
-                    b.Property<int>("TipoGastoId")
-                        .HasColumnType("int");
+                    b.Property<string>("TipoGastoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -136,8 +137,9 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("TipoDoc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TipoGastoId")
-                        .HasColumnType("int");
+                    b.Property<string>("TipoGastoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Total")
                         .HasColumnType("float");
@@ -177,11 +179,8 @@ namespace Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("Backend.Domain.Entities.TipoGasto", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");

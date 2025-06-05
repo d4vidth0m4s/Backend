@@ -9,14 +9,14 @@ namespace Backend.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context = context;
 
-        public async Task<int> CreateAsync(TipoGasto entity)
+        public async Task<string> CreateAsync(TipoGasto entity)
         {
             _context.TipoGastos.Add(entity);
             await _context.SaveChangesAsync();
-            return entity.Id;
+            return entity.Id;   
         }
 
-        public async Task<TipoGasto?> GetByIdAsync(int id)
+        public async Task<TipoGasto?> GetByIdAsync(string id)
         {
             return await _context.TipoGastos.FindAsync(id);
         }
@@ -36,7 +36,7 @@ namespace Backend.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string id)
         {
             var entity = await _context.TipoGastos.FindAsync(id);
             if (entity == null) return false;

@@ -19,7 +19,7 @@ namespace Backend.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TipoGastoResponseDto>> GetById(int id)
+        public async Task<ActionResult<TipoGastoResponseDto>> GetById(string id)
         {
             var response = await _tipoGastoServices.GetByIdAsync(id);
             if (response == null) return NotFound();
@@ -28,7 +28,7 @@ namespace Backend.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] TipoGastoEditRequestDto dto)
+        public async Task<ActionResult> Update(string id, [FromBody] TipoGastoEditRequestDto dto)
         {
             if (id != dto.Id) return BadRequest();
 
@@ -37,7 +37,7 @@ namespace Backend.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
             var deleted = await _tipoGastoServices.DeleteAsync(id);
             return deleted ? NoContent() : NotFound();

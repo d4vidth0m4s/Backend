@@ -4,6 +4,8 @@ using Backend.Application.Interfaz;
 using Backend.Domain.Entities;
 using Backend.Domain.IRepository;
 using Mapster;
+using shortid;
+using shortid.Configuration;
 
 namespace Backend.Application.Services
 {
@@ -11,10 +13,16 @@ namespace Backend.Application.Services
     {
         private readonly ITipoGastoRepository _repo = repo;
 
-        public async Task<int> CreateAsync(TipoGastoRequestDto dto)
+        public async Task<string> CreateAsync(TipoGastoRequestDto dto)
         {
+            ShortId.SetCharacters("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            ShortId.SetSeed(Environment.TickCount);
+            var options = new GenerationOptions(length: 9, useSpecialCharacters:false);
+
+
             var response = dto.Adapt<TipoGasto>();
             response.FechaCreacion = DateTime.UtcNow;
+            response.Id = ShortId.Generate(options);
             return await _repo.CreateAsync(response);
         }
 
@@ -29,7 +37,7 @@ namespace Backend.Application.Services
             });
         }
 
-        public async Task<TipoGastoResponseDto?> GetByIdAsync(int id)
+        public async Task<TipoGastoResponseDto?> GetByIdAsync(string id)
         {
             var a = await _repo.GetByIdAsync(id);
             if (a == null) return null;
@@ -48,7 +56,7 @@ namespace Backend.Application.Services
             return await _repo.UpdateAsync(response);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string id)
         {
             return await _repo.DeleteAsync(id);
         }

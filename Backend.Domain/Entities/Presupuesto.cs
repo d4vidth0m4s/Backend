@@ -9,7 +9,7 @@ namespace Backend.Domain.Entities
         public double Monto { get; set; }
         public DateTime? FechaCreacion { get; set; }
 
-        public int TipoGastoId { get; set; }
+        public string TipoGastoId { get; set; }
         public TipoGasto? TipoGasto { get; set; }
     }
 }

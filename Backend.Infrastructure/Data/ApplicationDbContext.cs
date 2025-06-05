@@ -28,6 +28,9 @@ namespace Backend.Infrastructure.Data
                 .HasForeignKey(g => g.FondoMonetarioId);
 
             modelBuilder.Entity<TipoGasto>()
+                 .HasKey(t => t.Id);
+
+            modelBuilder.Entity<TipoGasto>()
                 .HasMany(t => t.Presupuestos)
                 .WithOne(p => p.TipoGasto)
                 .HasForeignKey(p => p.TipoGastoId);

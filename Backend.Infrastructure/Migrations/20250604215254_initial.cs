@@ -32,8 +32,7 @@ namespace Backend.Infrastructure.Migrations
                 name: "TipoGastos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -75,7 +74,7 @@ namespace Backend.Infrastructure.Migrations
                     Anio = table.Column<int>(type: "int", nullable: false),
                     Monto = table.Column<double>(type: "float", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TipoGastoId = table.Column<int>(type: "int", nullable: false)
+                    TipoGastoId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,7 +99,7 @@ namespace Backend.Infrastructure.Migrations
                     TipoDoc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Total = table.Column<double>(type: "float", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TipoGastoId = table.Column<int>(type: "int", nullable: false)
+                    TipoGastoId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {

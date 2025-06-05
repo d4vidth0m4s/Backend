@@ -5,10 +5,10 @@ namespace Backend.Application.Interfaz
 {
     public interface ITipoGastoServices
     {
-        Task<int> CreateAsync(TipoGastoRequestDto dto);
+        Task<string> CreateAsync(TipoGastoRequestDto dto);
         Task<IEnumerable<TipoGastoResponseDto>> GetAllAsync();
-        Task<TipoGastoResponseDto?> GetByIdAsync(int id);
+        Task<TipoGastoResponseDto?> GetByIdAsync(string id);
         Task<bool> UpdateAsync(TipoGastoEditRequestDto dto);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(string id);
     }
 }

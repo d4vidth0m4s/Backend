@@ -9,7 +9,7 @@
         public double Total { get; set; }
         public DateTime FechaCreacion { get; set; }
 
-        public int TipoGastoId { get; set; }
+        public string TipoGastoId { get; set; }
 
         public List<RegistroGastoDetallesDto>? Detalles { get; set; }
     }

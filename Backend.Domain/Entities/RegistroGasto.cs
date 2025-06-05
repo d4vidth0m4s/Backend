@@ -11,7 +11,7 @@
         public double Total { get; set; }
         public DateTime FechaCreacion { get; set; }
 
-        public int TipoGastoId { get; set; }
+        public string TipoGastoId { get; set; }
         public TipoGasto? TipoGasto { get; set; }
 
         public ICollection<RegistroGastoDetalles>? Detalles { get; set; }
