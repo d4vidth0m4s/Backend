@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Backend.Domain.Entities;
+
 
 namespace Backend.Domain.IRepository
 {
-    internal class IloginRepositor
+    public interface ILoginRepository 
     {
+        Task<Usuario?> ObtenerPorUsernameAsync(string username);
+        Task<bool> ValidarCredencialesAsync(string username, string password);
     }
 }

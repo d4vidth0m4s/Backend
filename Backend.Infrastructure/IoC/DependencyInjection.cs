@@ -21,6 +21,7 @@ namespace Backend.Infrastructure.IoC
             services.AddScoped<IMovimientoRepository, MovimientoRepository>();
             services.AddScoped<IGraficoPresupuestoRepository, GraficoPresupuestoRepository>();
             services.AddScoped<IRegistroGastoReoisitory, RegistroGastoRepository>();
+            services.AddScoped<ILoginRepository, LoginRepository>();
 
 
 

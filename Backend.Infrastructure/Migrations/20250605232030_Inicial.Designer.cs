@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250604215254_initial")]
-    partial class initial
+    [Migration("20250605232030_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,8 +164,9 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<int>("IdRegistroGasto")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdRegistroTipo")
-                        .HasColumnType("int");
+                    b.Property<string>("IdRegistroTipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Monto")
                         .HasColumnType("int");
@@ -191,6 +192,55 @@ namespace Backend.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoGastos");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Activo = true,
+                            FechaCreacion = new DateTime(2025, 5, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Nombre = "Administrador",
+                            PasswordHash = "$2a$11$QNrY2LL/tlNKcpUne7cuO.wFGf4SOPZX6/ji8Ep9iXjOdOP0zvCvK",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Backend.Domain.Entities.Deposito", b =>

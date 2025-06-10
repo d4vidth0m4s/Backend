@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,6 +39,24 @@ namespace Backend.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TipoGastos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Activo = table.Column<bool>(type: "bit", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,7 +143,7 @@ namespace Backend.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdRegistroGasto = table.Column<int>(type: "int", nullable: false),
-                    IdRegistroTipo = table.Column<int>(type: "int", nullable: false),
+                    IdRegistroTipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Monto = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -138,6 +156,11 @@ namespace Backend.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "Id", "Activo", "FechaCreacion", "FechaModificacion", "Nombre", "PasswordHash", "Username" },
+                values: new object[] { 1, true, new DateTime(2025, 5, 30, 0, 0, 0, 0, DateTimeKind.Utc), null, "Administrador", "$2a$11$QNrY2LL/tlNKcpUne7cuO.wFGf4SOPZX6/ji8Ep9iXjOdOP0zvCvK", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Depositos_FondoMonetarioId",
@@ -163,6 +186,12 @@ namespace Backend.Infrastructure.Migrations
                 name: "IX_RegistroGastos_TipoGastoId",
                 table: "RegistroGastos",
                 column: "TipoGastoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Username",
+                table: "Usuarios",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -176,6 +205,9 @@ namespace Backend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "RegistroGastoDetalles");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "RegistroGastos");

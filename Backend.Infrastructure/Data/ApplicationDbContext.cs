@@ -12,8 +12,10 @@ namespace Backend.Infrastructure.Data
         public DbSet<Deposito> Depositos { get; set; }
         public DbSet<RegistroGastoDetalles> RegistroGastoDetalles { get; set; }
 
+        public DbSet<Usuario> Usuarios { get; set; }
 
-        
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +46,29 @@ namespace Backend.Infrastructure.Data
               .HasMany(r => r.Detalles)
               .WithOne(d => d.RegistroGasto)
               .HasForeignKey(d => d.IdRegistroGasto);
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Username).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.PasswordHash).IsRequired();
+                entity.HasIndex(e => e.Username).IsUnique();
+
+            });
+
+
+            modelBuilder.Entity<Usuario>().HasData(
+            new Usuario
+            {
+                Id = 1,
+                Username = "admin",
+                PasswordHash = "123", // Hash de "admin"
+                Nombre = "Administrador",
+                Activo = true,
+                FechaCreacion = new DateTime(2025, 5, 30, 0, 0, 0, DateTimeKind.Utc)
+
+            }
+        );
         }
     }
 }

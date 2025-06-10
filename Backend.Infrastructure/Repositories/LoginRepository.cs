@@ -1,15 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Backend.Domain.IRepository;
+using Backend.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Backend.Domain.Entities;
+
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class LoginRepository
+    public class LoginRepository(ApplicationDbContext context) : ILoginRepository
     {
-        Task<Domain.Entities.Usuarios> ObtenerPorUsernameAsync(string username);
+        private readonly ApplicationDbContext _context = context;
 
-        Task<bool> ValidarCredencialesAsync(string username, string password);
+
+        public async Task<Usuario?> ObtenerPorUsernameAsync(string username)
+        {
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+        }
+
+        public async Task<bool> ValidarCredencialesAsync(string username, string password)
+        {
+            var usuario = await ObtenerPorUsernameAsync(username);
+            if (usuario == null) return false;
+
+            // Aquí puedes comparar directamente si no usas hash
+            return usuario.PasswordHash == password;
+
+        }
     }
 }

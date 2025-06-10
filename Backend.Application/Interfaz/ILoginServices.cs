@@ -1,16 +1,10 @@
 ﻿using Backend.Application.DTOs.Login.Response;
+using System.Threading.Tasks;
 
 namespace Backend.Application.Interfaz
 {
-    public interface ILoginServices
-    {
-       
-
-       
-    }
-
     public interface Iloginservices
     {
-         Task<LoginResponseDto> loginAsync(string username, string password);
+        Task<LoginResponseDto> loginAsync(string username, string password);
     }
 }

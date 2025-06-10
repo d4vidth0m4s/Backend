@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Backend.Application.Services
+{
+    public interface IUsuarioRepositorio
+    {
+        Task <Domain.Entities.Usuarios> ObtenerPorUsernameAsync(string username);
+        Task<bool> ValidarCredencialesAsync(string username, string password);
+    }
+}
