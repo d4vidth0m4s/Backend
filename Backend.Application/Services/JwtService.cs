@@ -19,7 +19,7 @@ namespace Backend.Application.Services
         public JwtService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _secretKey = _configuration["Jwt:SecretKey"] ?? throw new InvalidOperationException("JWT Secret Key no configurada");
+            _secretKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Secret Key no configurada");
             _issuer = _configuration["Jwt:Issuer"] ?? "ControlGastosAPI";
             _audience = _configuration["Jwt:Audience"] ?? "ControlGastosClients";
             _expirationMinutes = int.Parse(_configuration["Jwt:ExpirationMinutes"] ?? "60");

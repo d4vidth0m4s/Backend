@@ -11,5 +11,10 @@ namespace Backend.Application.DTOs.Login.Response
         public string Nombre { get; set; } = string.Empty;
     }
 
+    public class ValidateTokenDto
+    {
+        public bool ValToken { get; set; }
+        public string Mensaje { get; set; } 
+    }
 
 }
