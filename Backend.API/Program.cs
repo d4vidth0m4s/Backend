@@ -1,11 +1,10 @@
+﻿using Backend.API.Extensions;
 using Backend.Application.IoC;
 using Backend.Infrastructure.IoC;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Configuración de CORS
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
@@ -19,28 +18,30 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Add services to the container.
-builder.Services.AddServices();
-builder.Services.AddPersistenceServices(builder.Configuration);
+// Configuración de JWT (debe estar antes de AddControllers)
+builder.AddJwtAuthentication();
 
+// Inyección de dependencias - servicios de aplicación e infraestructura
+builder.Services.AddServices(); // Desde Application
+builder.Services.AddPersistenceServices(builder.Configuration); // Desde Infrastructure
+
+// Configuración de controladores y Swagger
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline de HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors(MyAllowSpecificOrigins);
-
 app.UseHttpsRedirection();
-
+app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllers();

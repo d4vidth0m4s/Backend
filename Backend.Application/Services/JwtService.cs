@@ -33,7 +33,7 @@ namespace Backend.Application.Services
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
+                new Claim("user_id", usuario.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, usuario.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

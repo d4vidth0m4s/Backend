@@ -14,10 +14,19 @@ namespace Backend.API.Controllers
     {
         private readonly IPresupuestosServices _presupuestosServices = presupuestosServices;
 
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst("user_id");
+            if (userIdClaim == null)
+                throw new UnauthorizedAccessException("No se pudo encontrar el ID del usuario en el token.");
+
+            return int.Parse(userIdClaim.Value);
+        }
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] PresupuestoRequestDto dto)
         {
-            var id = await _presupuestosServices.CreateAsync(dto);
+            var userId = GetCurrentUserId();
+            var id = await _presupuestosServices.CreateAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
@@ -34,22 +43,24 @@ namespace Backend.API.Controllers
         public async Task<ActionResult> Update(int id, [FromBody] PresupuestoEditRequestDto dto)
         {
             if (id != dto.Id) return BadRequest();
-
-            var updated = await _presupuestosServices.UpdateAsync(dto);
+            var userId = GetCurrentUserId();
+            var updated = await _presupuestosServices.UpdateAsync(dto,userId);
             return updated ? NoContent() : NotFound();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var deleted = await _presupuestosServices.DeleteAsync(id);
+            var userId = GetCurrentUserId();
+            var deleted = await _presupuestosServices.DeleteAsync(id, userId);
             return deleted ? NoContent() : NotFound();
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PresupuestoResponseDto>>> GetAll()
         {
-            var response = await _presupuestosServices.GetAllAsync();
+            var userId = GetCurrentUserId();
+            var response = await _presupuestosServices.GetAllAsync(userId);
             return Ok(response);
         }
 

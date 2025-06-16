@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250605232030_Inicial")]
-    partial class Inicial
+    [Migration("20250616042446_addDepositoUserFix")]
+    partial class addDepositoUserFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,9 +48,14 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FondoMonetarioId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Depositos");
                 });
@@ -78,7 +83,12 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<double>("SaldoInicial")
                         .HasColumnType("float");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FondoMonectarios");
                 });
@@ -107,9 +117,14 @@ namespace Backend.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TipoGastoId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Presupuestos");
                 });
@@ -189,7 +204,12 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<DateTime?>("FechaCreacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TipoGastos");
                 });
@@ -238,7 +258,7 @@ namespace Backend.Infrastructure.Migrations
                             Activo = true,
                             FechaCreacion = new DateTime(2025, 5, 30, 0, 0, 0, 0, DateTimeKind.Utc),
                             Nombre = "Administrador",
-                            PasswordHash = "$2a$11$QNrY2LL/tlNKcpUne7cuO.wFGf4SOPZX6/ji8Ep9iXjOdOP0zvCvK",
+                            PasswordHash = "123",
                             Username = "admin"
                         });
                 });
@@ -251,7 +271,26 @@ namespace Backend.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("Depositos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("FondoMonetario");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.FondoMonetario", b =>
+                {
+                    b.HasOne("Backend.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("FondoMonetos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Backend.Domain.Entities.Presupuesto", b =>
@@ -259,10 +298,18 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Domain.Entities.TipoGasto", "TipoGasto")
                         .WithMany("Presupuestos")
                         .HasForeignKey("TipoGastoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("Presupuestos")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TipoGasto");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Backend.Domain.Entities.RegistroGasto", b =>
@@ -295,6 +342,17 @@ namespace Backend.Infrastructure.Migrations
                     b.Navigation("RegistroGasto");
                 });
 
+            modelBuilder.Entity("Backend.Domain.Entities.TipoGasto", b =>
+                {
+                    b.HasOne("Backend.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("TipoGastos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Backend.Domain.Entities.FondoMonetario", b =>
                 {
                     b.Navigation("Depositos");
@@ -312,6 +370,17 @@ namespace Backend.Infrastructure.Migrations
                     b.Navigation("Presupuestos");
 
                     b.Navigation("RegistroGastos");
+                });
+
+            modelBuilder.Entity("Backend.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("Depositos");
+
+                    b.Navigation("FondoMonetos");
+
+                    b.Navigation("Presupuestos");
+
+                    b.Navigation("TipoGastos");
                 });
 #pragma warning restore 612, 618
         }

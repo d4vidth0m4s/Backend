@@ -6,41 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class FixPresupuestoTipoGastoRelation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "FondoMonectarios",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SaldoInicial = table.Column<double>(type: "float", nullable: false),
-                    SaldoActual = table.Column<double>(type: "float", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FondoMonectarios", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TipoGastos",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipoGastos", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
@@ -57,6 +27,50 @@ namespace Backend.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FondoMonectarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SaldoInicial = table.Column<double>(type: "float", nullable: false),
+                    SaldoActual = table.Column<double>(type: "float", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FondoMonectarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FondoMonectarios_Usuarios_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoGastos",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoGastos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TipoGastos_Usuarios_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,6 +102,7 @@ namespace Backend.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Mes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Anio = table.Column<int>(type: "int", nullable: false),
                     Monto = table.Column<double>(type: "float", nullable: false),
@@ -101,6 +116,12 @@ namespace Backend.Infrastructure.Migrations
                         name: "FK_Presupuestos_TipoGastos_TipoGastoId",
                         column: x => x.TipoGastoId,
                         principalTable: "TipoGastos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Presupuestos_Usuarios_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -160,7 +181,7 @@ namespace Backend.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "Id", "Activo", "FechaCreacion", "FechaModificacion", "Nombre", "PasswordHash", "Username" },
-                values: new object[] { 1, true, new DateTime(2025, 5, 30, 0, 0, 0, 0, DateTimeKind.Utc), null, "Administrador", "$2a$11$QNrY2LL/tlNKcpUne7cuO.wFGf4SOPZX6/ji8Ep9iXjOdOP0zvCvK", "admin" });
+                values: new object[] { 1, true, new DateTime(2025, 5, 30, 0, 0, 0, 0, DateTimeKind.Utc), null, "Administrador", "123", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Depositos_FondoMonetarioId",
@@ -168,9 +189,19 @@ namespace Backend.Infrastructure.Migrations
                 column: "FondoMonetarioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FondoMonectarios_UserId",
+                table: "FondoMonectarios",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Presupuestos_TipoGastoId",
                 table: "Presupuestos",
                 column: "TipoGastoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Presupuestos_UserId",
+                table: "Presupuestos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegistroGastoDetalles_IdRegistroGasto",
@@ -186,6 +217,11 @@ namespace Backend.Infrastructure.Migrations
                 name: "IX_RegistroGastos_TipoGastoId",
                 table: "RegistroGastos",
                 column: "TipoGastoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TipoGastos_UserId",
+                table: "TipoGastos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_Username",
@@ -207,9 +243,6 @@ namespace Backend.Infrastructure.Migrations
                 name: "RegistroGastoDetalles");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
-
-            migrationBuilder.DropTable(
                 name: "RegistroGastos");
 
             migrationBuilder.DropTable(
@@ -217,6 +250,9 @@ namespace Backend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TipoGastos");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
         }
     }
 }

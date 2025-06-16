@@ -4,19 +4,29 @@ using Backend.Application.DTOs.TipoGasto.Response;
 using Backend.Application.DTOs.TipoGasto.Resquest;
 using Backend.Application.Interfaz;
 using Backend.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class FondoMonectarioController(IFondoMonectarioServices fondoMonectarioServices) : ControllerBase
     {
         private readonly IFondoMonectarioServices _fondoMonectarioServices = fondoMonectarioServices;
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst("user_id") ?? throw new UnauthorizedAccessException("No se pudo encontrar el ID del usuario en el token.");
+            return int.Parse(userIdClaim.Value);
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] FondoMonectarioRequestDto dto)
         {
-            var id = await _fondoMonectarioServices.CreateAsync(dto);
+            var userId = GetCurrentUserId();
+            var id = await _fondoMonectarioServices.CreateAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
@@ -33,22 +43,24 @@ namespace Backend.API.Controllers
         public async Task<ActionResult> Update(int id, [FromBody] FondoMonectarioEditRequestDto dto)
         {
             if (id != dto.Id) return BadRequest();
-
-            var updated = await _fondoMonectarioServices.UpdateAsync(dto);
+            var userId = GetCurrentUserId();
+            var updated = await _fondoMonectarioServices.UpdateAsync(dto, userId);
             return updated ? NoContent() : NotFound();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var deleted = await _fondoMonectarioServices.DeleteAsync(id);
+            var userId = GetCurrentUserId();
+            var deleted = await _fondoMonectarioServices.DeleteAsync(id, userId);
             return deleted ? NoContent() : NotFound();
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FondoMonectarioResponseDto>>> GetAll()
         {
-            var response = await _fondoMonectarioServices.GetAllAsync();
+            var userId = GetCurrentUserId();
+            var response = await _fondoMonectarioServices.GetAllAsync(userId);
             return Ok(response);
         }
     }

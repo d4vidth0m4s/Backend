@@ -1,4 +1,4 @@
-﻿using Backend.Domain.Entities;
+﻿    using Backend.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace Backend.Domain.IRepository
     public interface IPresupuestoRepository
     {
         Task<int> CreateAsync(Presupuesto entity);
-        Task<IEnumerable<Presupuesto>> GetAllAsync();
-        Task<bool> UpdateAsync(Presupuesto entity);
+        Task<IEnumerable<Presupuesto>> GetAllAsync(int userId);
+        Task<bool> UpdateAsync(Presupuesto entity, int userId);
         Task<Presupuesto?> GetByIdAsync(int id);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id, int userId);
     }
 }

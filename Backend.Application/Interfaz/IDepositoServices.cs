@@ -5,10 +5,10 @@ namespace Backend.Application.Interfaz
 {
     public interface IDepositoServices
     {
-        Task<int> CreateAsync(DepositoRequestDto dto);
-        Task<IEnumerable<DepositoResponseDto>> GetAllAsync();
+        Task<int> CreateAsync(DepositoRequestDto dto, int userId);
+        Task<IEnumerable<DepositoResponseDto>> GetAllAsync(int userId);
         Task<DepositoResponseDto?> GetByIdAsync(int id);
-        Task<bool> UpdateAsync(DepositoEditRequestDto dto);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> UpdateAsync(DepositoEditRequestDto dto, int userId);
+        Task<bool> DeleteAsync(int id, int userId);
     }
 }

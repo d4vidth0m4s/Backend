@@ -5,10 +5,10 @@ namespace Backend.Domain.IRepository
     public interface IFondoMonectarioRepository
     {
         Task<int> CreateAsync(FondoMonetario entity);
-        Task<IEnumerable<FondoMonetario>> GetAllAsync();
+        Task<IEnumerable<FondoMonetario>> GetAllAsync(int userId);
         Task<FondoMonetario?> GetByIdAsync(int id);
-        Task<bool> UpdateAsync(FondoMonetario entity);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> UpdateAsync(FondoMonetario entity, int userId);
+        Task<bool> DeleteAsync(int id, int userId);
 
 
     }

@@ -21,7 +21,7 @@ namespace Backend.Application.Services
             if (fondo.SaldoActual < dto.Total) throw new Exception("Fondo monetario no encontrado");
 
             fondo.SaldoActual -= dto.Total;
-            var fondoActualizado = await _fondoRepo.UpdateAsync(fondo);
+            var fondoActualizado = await _fondoRepo.UpdateAsync(fondo,1);
 
             if (!fondoActualizado) throw new Exception("Error al actualizar el saldo del fondo monetario");
 

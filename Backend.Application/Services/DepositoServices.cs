@@ -11,16 +11,17 @@ namespace Backend.Application.Services
     {
         private readonly IDepositoRepository _repo = repo;
 
-        public async Task<int> CreateAsync(DepositoRequestDto dto)
+        public async Task<int> CreateAsync(DepositoRequestDto dto, int userId)
         {
             var response = dto.Adapt<Deposito>();
             response.FechaCreacion = DateTime.UtcNow;
+            response.UserId = userId;
             return await _repo.CreateAsync(response);
         }
 
-        public async Task<IEnumerable<DepositoResponseDto>> GetAllAsync()
+        public async Task<IEnumerable<DepositoResponseDto>> GetAllAsync(int userId)
         {
-            var data = await _repo.GetAllAsync();
+            var data = await _repo.GetAllAsync(userId);
             return data.Select(a => new DepositoResponseDto
             {
                 Id = a.Id,
@@ -47,15 +48,15 @@ namespace Backend.Application.Services
             };
         }
 
-        public async Task<bool> UpdateAsync(DepositoEditRequestDto dto)
+        public async Task<bool> UpdateAsync(DepositoEditRequestDto dto, int userId)
         {
             var response = dto.Adapt<Deposito>();
-            return await _repo.UpdateAsync(response);
+            return await _repo.UpdateAsync(response, userId);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id, int userId)
         {
-            return await _repo.DeleteAsync(id);
+            return await _repo.DeleteAsync(id, userId);
         }
     }
 }

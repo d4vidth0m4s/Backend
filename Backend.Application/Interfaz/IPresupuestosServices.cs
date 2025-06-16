@@ -11,11 +11,11 @@ namespace Backend.Application.Interfaz
 {
     public interface IPresupuestosServices
     {
-        Task<int> CreateAsync(PresupuestoRequestDto dto);
-        Task<IEnumerable<PresupuestoResponseDto>> GetAllAsync();
+        Task<int> CreateAsync(PresupuestoRequestDto dto, int userId);
+        Task<IEnumerable<PresupuestoResponseDto>> GetAllAsync(int userId);
         Task<PresupuestoResponseDto?> GetByIdAsync(int id);
-        Task<bool> UpdateAsync(PresupuestoEditRequestDto dto);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> UpdateAsync(PresupuestoEditRequestDto dto, int userId);
+        Task<bool> DeleteAsync(int id, int userId);
 
 
     }

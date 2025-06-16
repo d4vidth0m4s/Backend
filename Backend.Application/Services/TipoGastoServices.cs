@@ -13,7 +13,7 @@ namespace Backend.Application.Services
     {
         private readonly ITipoGastoRepository _repo = repo;
 
-        public async Task<string> CreateAsync(TipoGastoRequestDto dto)
+        public async Task<string> CreateAsync(TipoGastoRequestDto dto, int userId)
         {
             ShortId.SetCharacters("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
             ShortId.SetSeed(Environment.TickCount);
@@ -23,14 +23,16 @@ namespace Backend.Application.Services
             var response = dto.Adapt<TipoGasto>();
             response.FechaCreacion = DateTime.UtcNow;
             response.Id = ShortId.Generate(options);
+            response.UserId = userId;
             return await _repo.CreateAsync(response);
         }
 
-        public async Task<IEnumerable<TipoGastoResponseDto>> GetAllAsync()
+        public async Task<IEnumerable<TipoGastoResponseDto>> GetAllAsync(int userId)
         {
-            var data = await _repo.GetAllAsync();
+            var data = await _repo.GetAllAsync(userId);
             return data.Select(a => new TipoGastoResponseDto
             {
+                UserId = a.UserId,
                 Id = a.Id,
                 Descripcion = a.Descripcion,
                 FechaCreacion = a.FechaCreacion,
@@ -50,15 +52,15 @@ namespace Backend.Application.Services
             };
         }
 
-        public async Task<bool> UpdateAsync(TipoGastoEditRequestDto dto)
+        public async Task<bool> UpdateAsync(TipoGastoEditRequestDto dto, int userId)
         {
             var response = dto.Adapt<TipoGasto>();
-            return await _repo.UpdateAsync(response);
+            return await _repo.UpdateAsync(response, userId);
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id, int userId)
         {
-            return await _repo.DeleteAsync(id);
+            return await _repo.DeleteAsync(id, userId);
         }
     }
 }

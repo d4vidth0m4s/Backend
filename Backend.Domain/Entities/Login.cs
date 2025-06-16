@@ -26,5 +26,11 @@ namespace Backend.Domain.Entities
         public bool Activo { get; set; } = true;
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
+
+        public ICollection<Presupuesto> Presupuestos { get; set; }
+        public ICollection<FondoMonetario> FondoMonetos { get;set; }
+        public ICollection<TipoGasto> TipoGastos { get; set;}
+
+        public ICollection<Deposito> Depositos { get; set; }
     }
 }

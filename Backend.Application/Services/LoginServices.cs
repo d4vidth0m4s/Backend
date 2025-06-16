@@ -36,6 +36,7 @@ namespace Backend.Application.Services
            
             return new LoginResponseDto
             {
+                Id = usuario.Id,
                 Token = _JwtService.CreateToken(usuario),
                 Username = usuario.Username,
                 Nombre = usuario.Nombre

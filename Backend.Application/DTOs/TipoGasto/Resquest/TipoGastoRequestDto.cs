@@ -3,5 +3,6 @@
     public class TipoGastoRequestDto
     {
         public string? Descripcion { get; set; }
+        
     }
 }

@@ -21,26 +21,31 @@ namespace Backend.Infrastructure.Repositories
             return await _context.TipoGastos.FindAsync(id);
         }
 
-        public async Task<IEnumerable<TipoGasto>> GetAllAsync()
+        public async Task<IEnumerable<TipoGasto>> GetAllAsync(int userId)
         {
-            return await _context.TipoGastos.ToListAsync();
+            return await _context.TipoGastos
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
         }
 
-        public async Task<bool> UpdateAsync(TipoGasto entity)
+        public async Task<bool> UpdateAsync(TipoGasto entity, int userId)
         {
             var existing = await _context.TipoGastos.FindAsync(entity.Id);
             if (existing == null) return false;
 
-            _context.Entry(existing).CurrentValues.SetValues(entity);
+            
+            if (existing.UserId != userId) return false;
+
+            existing.Descripcion = entity.Descripcion; 
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id, int userId)
         {
             var entity = await _context.TipoGastos.FindAsync(id);
             if (entity == null) return false;
-
+            if (entity.UserId != userId) return false;
             _context.TipoGastos.Remove(entity);
             await _context.SaveChangesAsync();
             return true;

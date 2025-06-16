@@ -5,7 +5,7 @@
         public string? Mes { get; set; }
         public int Anio { get; set; }
         public double Monto { get; set; }
-        public int TipoGastoId { get; set; }
+        public string TipoGastoId { get; set; }
 
         public DateTime? FechaCreacion { get; set; }
     }
