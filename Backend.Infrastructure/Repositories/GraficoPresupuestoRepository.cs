@@ -16,7 +16,7 @@ namespace Backend.Infrastructure.Repositories
                 .ToListAsync();
 
             var gastos = await _context.RegistroGastos
-                .Include(g => g.TipoGasto)
+                //.Include(g => g.TipoGasto)
                 .Where(g => g.Fecha >= fechaInicio && g.Fecha <= fechaFin)
                 .ToListAsync();
 
@@ -27,7 +27,7 @@ namespace Backend.Infrastructure.Repositories
                     var tipoGasto = grupo.Key;
                     var presupuestoTotal = grupo.Sum(p => p.Monto);
                     var ejecutadoTotal = gastos
-                        .Where(g => g.TipoGasto.Descripcion == tipoGasto)
+                  //      .Where(g => g.TipoGasto.Descripcion == tipoGasto)
                         .Sum(g => g.Total);
 
                     return new GraficoPresupuestoDto

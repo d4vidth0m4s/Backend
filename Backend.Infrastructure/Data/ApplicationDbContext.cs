@@ -12,7 +12,6 @@ namespace Backend.Infrastructure.Data
         public DbSet<Deposito> Depositos { get; set; }
         public DbSet<RegistroGastoDetalles> RegistroGastoDetalles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,10 +44,7 @@ namespace Backend.Infrastructure.Data
                       .HasForeignKey(p => p.TipoGastoId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasMany(t => t.RegistroGastos)
-                      .WithOne(g => g.TipoGasto)
-                      .HasForeignKey(g => g.TipoGastoId)
-                      .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             // Configuración de FondoMonetario
@@ -107,6 +103,14 @@ namespace Backend.Infrastructure.Data
                       .WithOne(d => d.RegistroGasto)
                       .HasForeignKey(d => d.IdRegistroGasto)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.Property(r => r.UserId).IsRequired();
+
+                entity.HasOne(r => r.Usuario)
+                      .WithMany(t => t.RegistroGastos)
+                      .HasForeignKey(r => r.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
             });
 
             // Configuración de Deposito
@@ -141,6 +145,8 @@ namespace Backend.Infrastructure.Data
                     FechaCreacion = new DateTime(2025, 5, 30, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
+
+            
         }
     }
 }

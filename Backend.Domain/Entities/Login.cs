@@ -30,7 +30,7 @@ namespace Backend.Domain.Entities
         public ICollection<Presupuesto> Presupuestos { get; set; }
         public ICollection<FondoMonetario> FondoMonetos { get;set; }
         public ICollection<TipoGasto> TipoGastos { get; set;}
-
+        public ICollection<RegistroGasto> RegistroGastos { get; set; }
         public ICollection<Deposito> Depositos { get; set; }
     }
 }

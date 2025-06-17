@@ -8,7 +8,7 @@ namespace Backend.Application.Interfaz
     {
         Task<int> CreateAsync(FondoMonectarioRequestDto dto, int userId);
         Task<IEnumerable<FondoMonectarioResponseDto>> GetAllAsync(int userId);
-        Task<FondoMonectarioResponseDto?> GetByIdAsync(int id);
+        Task<FondoMonectarioResponseDto?> GetByIdAsync(int id, int userId);
         Task<bool> UpdateAsync(FondoMonectarioEditRequestDto dto, int userId);
         Task<bool> DeleteAsync(int id, int userId);
 

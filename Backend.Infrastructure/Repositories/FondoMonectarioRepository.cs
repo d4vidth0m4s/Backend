@@ -17,9 +17,9 @@ namespace Backend.Infrastructure.Repositories
             return entity.Id;
         }
 
-        public async Task<FondoMonetario?> GetByIdAsync(int id)
+        public async Task<FondoMonetario?> GetByIdAsync(int id, int userId)
         {
-            return await _context.FondoMonectarios.FindAsync(id);
+            return await _context.FondoMonectarios.FirstOrDefaultAsync(f => f.Id == id && f.UserId == userId);
         }
 
         public async Task<IEnumerable<FondoMonetario>> GetAllAsync(int userId)

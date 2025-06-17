@@ -26,7 +26,7 @@ namespace Backend.Infrastructure.Repositories
             return await _context.RegistroGastos
                 .Include(r => r.Detalles)
                 .Include(r => r.FondoMonetario)
-                .Include(r => r.TipoGasto)
+               // .Include(r => r.TipoGasto)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
@@ -36,7 +36,7 @@ namespace Backend.Infrastructure.Repositories
             return await _context.RegistroGastos
                 .Include(r => r.Detalles)
                 .Include(r => r.FondoMonetario)
-                .Include(r => r.TipoGasto)
+              //  .Include(r => r.TipoGasto)
                 .ToListAsync();
         }
 

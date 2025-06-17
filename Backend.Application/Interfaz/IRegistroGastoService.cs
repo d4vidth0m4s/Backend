@@ -7,7 +7,7 @@ namespace Backend.Application.Interfaz
 {
     public interface IRegistroGastoService
     {
-        Task<int> CreateAsync(RegistroGastoRequestDto dto);
+        Task<int> CreateAsync(RegistroGastoRequestDto dto,int userId);
         Task<IEnumerable<RegistroGastoResponseDto>> GetAllAsync();
         Task<RegistroGastoResponseDto?> GetByIdAsync(int id);
         Task<bool> UpdateAsync(RegistroGastoEditRequestDto dto);

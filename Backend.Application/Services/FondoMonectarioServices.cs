@@ -32,9 +32,9 @@ namespace Backend.Application.Services
             });
         }
 
-        public async Task<FondoMonectarioResponseDto?> GetByIdAsync(int id)
+        public async Task<FondoMonectarioResponseDto?> GetByIdAsync(int id, int userId)
         {
-            var a = await _repo.GetByIdAsync(id);
+            var a = await _repo.GetByIdAsync(id,userId);
             if (a == null) return null;
 
             return new FondoMonectarioResponseDto

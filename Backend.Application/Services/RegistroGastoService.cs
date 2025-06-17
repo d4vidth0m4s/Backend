@@ -14,19 +14,22 @@ namespace Backend.Application.Services
         private readonly IRegistroGastoReoisitory _repo = repo;
         private readonly IFondoMonectarioRepository _fondoRepo = fondoRepo;
 
-        public async Task<int> CreateAsync(RegistroGastoRequestDto dto)
+        public async Task<int> CreateAsync(RegistroGastoRequestDto dto, int userId)
         {
-            var fondo = await _fondoRepo.GetByIdAsync(dto.FondoMonetarioId);
+            var fondo = await _fondoRepo.GetByIdAsync(dto.FondoMonetarioId, userId);
             if (fondo == null) throw new Exception("Fondo monetario no encontrado");
-            if (fondo.SaldoActual < dto.Total) throw new Exception("Fondo monetario no encontrado");
+            if (fondo.SaldoActual < dto.Total) throw new Exception("Saldo Actual Menor al Registro Gasto Total");
 
             fondo.SaldoActual -= dto.Total;
-            var fondoActualizado = await _fondoRepo.UpdateAsync(fondo,1);
+            var fondoActualizado = await _fondoRepo.UpdateAsync(fondo, userId);
 
             if (!fondoActualizado) throw new Exception("Error al actualizar el saldo del fondo monetario");
 
-            // var response = dto.Adapt<RegistroGasto>();
-            var response = new RegistroGasto
+            var response = dto.Adapt<RegistroGasto>();
+            response.FechaCreacion = DateTime.UtcNow;
+
+            
+            /*var response = new RegistroGasto
             {
                 Fecha = dto.Fecha,
                 FondoMonetarioId = dto.FondoMonetarioId,
@@ -34,14 +37,14 @@ namespace Backend.Application.Services
                 TipoDoc = dto.TipoDoc,
                 Total = dto.Total,
                 FechaCreacion = dto.FechaCreacion,
-                TipoGastoId = dto.TipoGastoId,
+                UserId = userId,
                 Detalles = dto.Detalles?.Select(d => new RegistroGastoDetalles
                 {
                     IdRegistroTipo = d.IdRegistroTipo,
                     Monto = d.Monto
                 }).ToList()
             };
-            response.FechaCreacion = DateTime.UtcNow;
+            response.FechaCreacion = DateTime.UtcNow; */
             return await _repo.CreateAsync(response);
         }
 

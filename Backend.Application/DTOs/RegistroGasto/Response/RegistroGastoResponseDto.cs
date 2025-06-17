@@ -12,6 +12,7 @@ namespace Backend.Application.DTOs.RegistroGasto.Response
         public string? TipoDoc { get; set; }
         public double Total { get; set; }
         public DateTime FechaCreacion { get; set; }
+        
 
         public List<RegistroGastoDetallesDto>? Detalles { get; set; }
 

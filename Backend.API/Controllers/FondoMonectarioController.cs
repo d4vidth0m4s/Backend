@@ -33,7 +33,8 @@ namespace Backend.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<FondoMonectarioRequestDto>> GetById(int id)
         {
-            var response = await _fondoMonectarioServices.GetByIdAsync(id);
+            var userId = GetCurrentUserId();
+            var response = await _fondoMonectarioServices.GetByIdAsync(id,userId);
             if (response == null) return NotFound();
 
             return Ok(response);

@@ -2,19 +2,29 @@
 using Backend.Application.DTOs.RegistroGasto.Resquest;
 using Backend.Application.DTOs.TipoGasto.Response;
 using Backend.Application.Interfaz;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class RegistroGastoController(IRegistroGastoService tipoGastoServices) : ControllerBase
     {
         private readonly IRegistroGastoService _registroGastoService = tipoGastoServices;
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst("user_id") ?? throw new UnauthorizedAccessException("No se pudo encontrar el ID del usuario en el token.");
+            return int.Parse(userIdClaim.Value);
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] RegistroGastoRequestDto dto)
         {
-            var id = await _registroGastoService.CreateAsync(dto);
+            var userId = GetCurrentUserId();
+            var id = await _registroGastoService.CreateAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
